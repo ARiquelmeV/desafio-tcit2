@@ -8,7 +8,7 @@ async function deleteSeguro(seguro: Seguro): Promise<void> {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(seguro.id)
+            body: seguro.id.toString()
         });
 
         if (!response.ok) {

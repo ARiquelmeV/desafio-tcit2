@@ -2,6 +2,7 @@
 using desafio_tcit2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace desafio_tcit2.Controllers
 {
@@ -20,15 +21,15 @@ namespace desafio_tcit2.Controllers
         [HttpGet("GetSeguros")]
         public async Task<ActionResult<List<Seguro>>> GetSeguros()
         {
-            var test = await _context.Seguros.ToListAsync();
-            return test;
+            List<Seguro> seguros = await _context.Seguros.ToListAsync();
+            return seguros;
         }
 
         // GET: api/seguros/5
         [HttpGet("GetSeguro")]
         public async Task<ActionResult<Seguro>> GetSeguro(int id)
         {
-            var seguro = await _context.Seguros.FindAsync(id);
+            Seguro? seguro = await _context.Seguros.FindAsync(id);
 
             if (seguro == null)
             {
@@ -48,35 +49,10 @@ namespace desafio_tcit2.Controllers
             return CreatedAtAction(nameof(GetSeguro), new { id = seguro.Id }, seguro);
         }
 
-        //// POST: api/seguros, not required*
-        //[HttpPost("UpdateSeguro")]
-        //public async Task<IActionResult> UpdateSeguro(Seguro seguro)
-        //{
-        //    _context.Entry(seguro).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!SeguroExists(seguro.Id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
         [HttpPost("DeleteSeguro")]
-        public async Task<IActionResult> DeleteSeguro(int id)
+        public async Task<IActionResult> DeleteSeguro([FromBody] int id)
         {
-            var seguro = await _context.Seguros.FindAsync(id);
+            Seguro? seguro = await _context.Seguros.FindAsync(id);
             if (seguro == null)
             {
                 return NotFound();
