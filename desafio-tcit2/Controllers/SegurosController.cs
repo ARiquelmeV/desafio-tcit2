@@ -17,15 +17,15 @@ namespace desafio_tcit2.Controllers
         }
 
         // GET: api/seguros
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Seguro>>> GetSeguros()
+        [HttpGet("GetSeguros")]
+        public async Task<ActionResult<List<Seguro>>> GetSeguros()
         {
             var test = await _context.Seguros.ToListAsync();
             return test;
         }
 
         // GET: api/seguros/5
-        [HttpGet("{id}")]
+        [HttpGet("GetSeguro")]
         public async Task<ActionResult<Seguro>> GetSeguro(int id)
         {
             var seguro = await _context.Seguros.FindAsync(id);
@@ -39,7 +39,7 @@ namespace desafio_tcit2.Controllers
         }
 
         // POST: api/seguros
-        [HttpPost]
+        [HttpPost("CreateSeguro")]
         public async Task<ActionResult<Seguro>> CreateSeguro(Seguro seguro)
         {
             _context.Seguros.Add(seguro);
@@ -48,38 +48,32 @@ namespace desafio_tcit2.Controllers
             return CreatedAtAction(nameof(GetSeguro), new { id = seguro.Id }, seguro);
         }
 
-        // PUT: api/seguros/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSeguro(int id, Seguro seguro)
-        {
-            if (id != seguro.Id)
-            {
-                return BadRequest();
-            }
+        //// POST: api/seguros, not required*
+        //[HttpPost("UpdateSeguro")]
+        //public async Task<IActionResult> UpdateSeguro(Seguro seguro)
+        //{
+        //    _context.Entry(seguro).State = EntityState.Modified;
 
-            _context.Entry(seguro).State = EntityState.Modified;
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!SeguroExists(seguro.Id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SeguroExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    return NoContent();
+        //}
 
-            return NoContent();
-        }
-
-        // DELETE: api/seguros/5
-        [HttpDelete("{id}")]
+        [HttpPost("DeleteSeguro")]
         public async Task<IActionResult> DeleteSeguro(int id)
         {
             var seguro = await _context.Seguros.FindAsync(id);
